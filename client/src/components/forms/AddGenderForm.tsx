@@ -3,7 +3,12 @@ import GenderServices from "../../services/GenderServices";
 import ErrorHandler from "../../handler/ErrorHandler";
 import GenderFieldErrors from "../../interfaces/GenderFieldErrors";
 
-const AddGenderForm = () => {
+interface AddGenderFormProps {
+    onGenderAdded: (message: string) => void;
+}
+
+
+const AddGenderForm = ({ onGenderAdded }: AddGenderFormProps) => {
     const [state, setState] = useState({
         loadingStore: false,
         gender: "",
@@ -34,6 +39,8 @@ const AddGenderForm = () => {
                         gender: "",
                         errors: {} as GenderFieldErrors,
                     }));
+
+                    onGenderAdded(res.data.message);
                 } else {
                     console.error("Unexpected status error during storing gender: ", res.status);
                 }
@@ -61,7 +68,7 @@ const AddGenderForm = () => {
             <form onSubmit={handleStoreGender}>
                 <div className="form-group">
                     <div className="mb-3">
-                        <label htmlFor="gender">Gender</label>
+                        <label htmlFor="gender">GENDER</label>
                         <input
                             type="text"
                             className={`form-control ${state.errors.gender ? "is-invalid" : ""
