@@ -5,13 +5,19 @@ import AlertMessage from "../../AlertMessage";
 
 interface AddUserModalProps {
     showModal: boolean;
+    onRefreshUsers: (refresh: boolean) => void;
     onClose: () => void;
 }
 
-const AddUserModal = ({ showModal, onClose }: AddUserModalProps) => {
+const AddUserModal = ({
+    showModal,
+    onRefreshUsers,
+    onClose
+}: AddUserModalProps) => {
     const submitFormRef = useRef<() => void | null>(null);
-    const [loadingStore, setLoadingStore] = useState(false);
 
+    const [refreshUsers, setRefreshUsers] = useState(false);
+    const [loadingStore, setLoadingStore] = useState(false);
 
     const [message, setMessage] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
@@ -43,7 +49,7 @@ const AddUserModal = ({ showModal, onClose }: AddUserModalProps) => {
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Add User</h5>
+                            <h5 className="modal-title">ADD USER</h5>
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
@@ -51,14 +57,19 @@ const AddUserModal = ({ showModal, onClose }: AddUserModalProps) => {
                                     message={message}
                                     isSuccess={isSuccess}
                                     isVisible={isVisible}
-                                    onClose={handleCloseAlertMessage} />
-
+                                    onClose={handleCloseAlertMessage}
+                                />
                             </div>
                             <AddUserForm
                                 setSubmitForm={submitFormRef}
                                 setLoadingStore={setLoadingStore}
-                                onUserAdded={(message) =>
-                                    handleShowAlertMessage(message, true, true)
+                                onUserAdded={(message) => {
+                                    handleShowAlertMessage(message, true, true);
+                                    setRefreshUsers(!refreshUsers);
+                                    onRefreshUsers(refreshUsers);
+                                }
+
+
                                 }
                             />
                         </div>
