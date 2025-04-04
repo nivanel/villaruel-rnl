@@ -4,11 +4,11 @@ import UserService from "../../../services/UserService";
 import ErrorHandler from "../../../handler/ErrorHandler";
 import Spinner from "../../Spinner";
 
-interface UsersTable {
+interface UsersTableProps {
     refreshUsers: boolean;
 }
 
-const UsersTable = ({ refreshUsers }: UsersTable) => {
+const UsersTable = ({ refreshUsers }: UsersTableProps) => {
     const [state, setState] = useState({
         loadingUsers: true,
         users: [] as Users[],
