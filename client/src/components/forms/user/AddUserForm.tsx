@@ -1,8 +1,8 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import ErrorHandler from "../../../handler/ErrorHandler"
 import GenderService from "../../../services/GenderService"
-import Genders from "../../../interfaces/Genders";
-import UserFieldErrors from "../../../interfaces/UserFieldErrors";
+import { Genders } from "../../../interfaces/Genders";
+import { UserFieldErrors } from "../../../interfaces/UserFieldErrors";
 import UserService from "../../../services/UserService";
 
 interface AddUserFormProps {
