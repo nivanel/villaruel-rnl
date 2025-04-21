@@ -1,9 +1,21 @@
 <?php
 
-use App\Http\Controllers\Api\GenderController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\GenderController;
+use App\Http\Controllers\Api\UserController;
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/login', 'login');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/user', 'user');
+        Route::post('/logout', 'logout');
+    });
+});
 
 Route::controller(GenderController::class)->group(function () {
     Route::get('/loadGenders', 'loadGenders');
@@ -19,6 +31,7 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/updateUser/{user}', 'updateUser');
     Route::put('/destroyUser/{user}', 'destroyUser');
 });
+
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

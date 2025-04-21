@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import GenderService from "../../../services/GenderService";
 import ErrorHandler from "../../../handler/ErrorHandler";
+import { GenderFieldErrors } from "../../../interfaces/GenderFieldErrors";
+import GenderService from "../../../services/GenderService";
 import Spinner from "../../Spinner";
-import GenderFieldErrors from "../../../interfaces/GenderFieldErrors";
 import SpinnerSmall from "../../SpinnerSmall";
 
 interface EditGenderFormProps {
@@ -44,7 +44,8 @@ const EditGenderForm = ({ onGenderUpdate }: EditGenderFormProps) => {
                         gender: res.data.gender.gender,
                     }));
                 } else {
-                    console.error('Unexpected status error while getting gender: ',
+                    console.error(
+                        "Unexpected status error while getting gender: ",
                         res.status
                     );
                 }
@@ -68,17 +69,18 @@ const EditGenderForm = ({ onGenderUpdate }: EditGenderFormProps) => {
             loadingUpdate: true,
         }));
 
-        GenderService.updateGender(state.gender_id, state).
-            then((res) => {
+        GenderService.updateGender(state.gender_id, state)
+            .then((res) => {
                 if (res.status === 200) {
                     setState((prevState) => ({
                         ...prevState,
                         errors: {} as GenderFieldErrors,
                     }));
+
                     onGenderUpdate(res.data.message);
                 } else {
                     console.error(
-                        "Unexpected status error while updating Gender: ",
+                        "Unexpected status error while updating gender: ",
                         res.status
                     );
                 }
@@ -117,41 +119,46 @@ const EditGenderForm = ({ onGenderUpdate }: EditGenderFormProps) => {
                     <Spinner />
                 </div>
             ) : (
-                <div>
-                    <form onSubmit={handleUpdateGender}>
+                <form onSubmit={handleUpdateGender}>
+                    <div className="form-group">
                         <div className="mb-3">
-                            <label htmlFor="gender" className="form-label">
-                                Edit Gender
+                            <label htmlFor="gender">
+                                <br />
+                                Gender
                             </label>
                             <input
                                 type="text"
-                                className={`form-control ${state.errors.gender ? "is-invalid" : ""}`}
+                                className={`form-control ${state.errors.gender ? "is-invalid" : ""
+                                    }`}
                                 name="gender"
                                 id="gender"
                                 value={state.gender}
                                 onChange={handleInputChange}
-
                             />
                             {state.errors.gender && (
                                 <p className="text-danger">{state.errors.gender[0]}</p>
                             )}
                         </div>
                         <div className="d-flex justify-content-end">
-                            <Link to={"/"} className="btn btn-secondary me-1">
-                                CANCEL
+                            <Link to={"/genders"} className="btn btn-secondary me-1">
+                                Back
                             </Link>
-                            <button type="submit" className="btn btn-primary" disabled={state.loadingUpdate}>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={state.loadingUpdate}
+                            >
                                 {state.loadingUpdate ? (
                                     <>
                                         <SpinnerSmall /> Updating...
                                     </>
                                 ) : (
-                                    'UPDATE'
+                                    "Update"
                                 )}
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             )}
         </>
     );

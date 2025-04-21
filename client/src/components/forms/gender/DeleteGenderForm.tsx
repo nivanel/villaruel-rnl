@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import GenderService from "../../../services/GenderService";
 import ErrorHandler from "../../../handler/ErrorHandler";
+import GenderService from "../../../services/GenderService";
 import Spinner from "../../Spinner";
 import SpinnerSmall from "../../SpinnerSmall";
 
@@ -10,7 +10,7 @@ interface DeleteGenderFormProps {
 }
 
 const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
-  const { gender_id } = useParams()
+  const { gender_id } = useParams();
 
   const [state, setState] = useState({
     loadingGet: true,
@@ -26,10 +26,13 @@ const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
           setState((prevState) => ({
             ...prevState,
             gender_id: res.data.gender.gender_id,
-            gender: res.data.gender.gender
-          }))
+            gender: res.data.gender.gender,
+          }));
         } else {
-          console.error("Unexpected status error while getting gender: ", res.status)
+          console.error(
+            "Unexpected status error while getting gender: ",
+            res.status
+          );
         }
       })
       .catch((error) => {
@@ -45,17 +48,21 @@ const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
 
   const handleDestroyGender = (e: FormEvent) => {
     e.preventDefault();
+
     setState((prevState) => ({
       ...prevState,
-      loadingDestroy: true
-    }))
+      loadingDestroy: true,
+    }));
 
     GenderService.destroyGender(state.gender_id)
       .then((res) => {
         if (res.status === 200) {
           onDeleteGender(res.data.message);
         } else {
-          console.error('Unexpected status error while destroying gender: ', res.status);
+          console.error(
+            "Unexpected status error while destroying: ",
+            res.status
+          );
         }
       })
       .catch((error) => {
@@ -68,7 +75,6 @@ const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
         }));
       });
   };
-
 
   useEffect(() => {
     if (gender_id) {
@@ -87,12 +93,12 @@ const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
         </div>
       ) : (
         <form onSubmit={handleDestroyGender}>
-          <h3 className="">Are you sure you want to delete this gender?</h3>
-          <div className="form-group">
+          <h5 className="text-danger text-center fw-bold p-3 border mt-4 border-danger rounded">
+            Are you sure you want to delete this gender?
+          </h5>
+          <div className="form-group mt-4">
             <div className="mb-3">
-              <label htmlFor="gender" className="form-label">
-                Delete Gender
-              </label>
+              <label htmlFor="gender">Gender</label>
               <input
                 type="text"
                 className="form-control"
@@ -103,29 +109,32 @@ const DeleteGenderForm = ({ onDeleteGender }: DeleteGenderFormProps) => {
               />
             </div>
             <div className="d-flex justify-content-end">
-              <Link to={"/"}
-                className={`btn btn-secondary me-1 ${state.loadingDestroy ? 'disabled' : ''}`}>
-                BACK
+              <Link
+                to={"/genders"}
+                className={`btn btn-secondary me-1 ${state.loadingDestroy ? "disable" : ""
+                  }`}
+              >
+                Back
               </Link>
-              <button type="submit"
+              <button
+                type="submit"
                 className="btn btn-danger"
                 disabled={state.loadingDestroy}
               >
                 {state.loadingDestroy ? (
                   <>
-                    <SpinnerSmall /> DELETING...
+                    <SpinnerSmall /> Deleting...
                   </>
                 ) : (
-                  "YES"
+                  "Yes"
                 )}
               </button>
             </div>
           </div>
         </form>
       )}
-
     </>
   );
 };
 
-export default DeleteGenderForm
+export default DeleteGenderForm;

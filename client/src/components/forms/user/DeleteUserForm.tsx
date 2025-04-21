@@ -99,7 +99,7 @@ const DeleteUserForm = ({
                         type="text" 
                         className="form-control" 
                         name="full_name"
-                        value={state.full}
+                        value={state.full_name}
                             readOnly
                         />                 
                 </div>
